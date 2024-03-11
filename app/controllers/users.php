@@ -3,7 +3,7 @@ include(ROOT_PATH . "/app/database/db.php");
 include(ROOT_PATH . "/app/helpers/middleware.php");
 include(ROOT_PATH . "/app/helpers/validateUser.php");
 $table = 'users';
-$admin_users = selectAll($table,['admin' => 1]);
+$admin_users = selectAll($table);
 
 $errors = array();
 $username = '';
@@ -83,7 +83,7 @@ if (isset($_GET['id'])){
     $user = selectOne($table, ['id' => $_GET['id']]);
     $id = $user['id'];
     $username = $user['username'];
-    $admin = isset($user['admin']) ? 1 : 0;
+    $admin = $user['admin'];
     $email = $user['email'];
 }
 
