@@ -1,4 +1,5 @@
 <?php include("path.php"); ?>
+<?php include(ROOT_PATH . "/app/controllers/users.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,6 +21,7 @@
     <div class="auth-content">
         <form action="register.php" method="post">
             <h2 class="form-title">Register</h2>
+            <?php include(ROOT_PATH . "/app/helpers/formErrors.php"); ?>
             <div>
                 <label for="">Username: </label>
                 <input type="text" name="username" id="" class="text-input" required>
