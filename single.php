@@ -1,4 +1,13 @@
 <?php include("path.php"); ?>
+<?php include(ROOT_PATH . "/app/controllers/posts.php");
+
+if(isset($_GET['id'])) {
+$post = selectOne('posts', ['id' => $_GET['id']]);
+}
+$topics = selectAll('topics');
+$posts = selectAll('posts', ['published' => 1]);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +21,7 @@
         href="https://fonts.googleapis.com/css2?family=Candal&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
         rel="stylesheet">
     <script src="https://kit.fontawesome.com/bbc375b4ba.js" crossorigin="anonymous"></script>
-    <title>Blog Pages</title>
+    <title><?php echo $post['title']; ?> | BlogPost</title>
 </head>
 
 <body>
@@ -20,64 +29,30 @@
     <div class="page-wrapper">
         <div class="content clearfix">
             <div class="main-content single">
-                <h1 class="post-title">Title of the Post</h1>
+                <h1 class="post-title"><?php echo $post['title']; ?></h1>
                 <div class="post-content">
-                    <p>lorem ipsum</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-
-                    <p>lorem ipsum</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-
-                    <p>lorem ipsum</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-
-                    <p>lorem ipsum</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam harum magnam, quaerat reprehenderit fugit iusto velit asperiores quod enim tempora eius. Quis voluptates facilis nesciunt fugit amet excepturi architecto! Reprehenderit.</p>
+                    <?php echo html_entity_decode($post['body']); ?>
                 </div>
             </div>
 
             <div class="sidebar single">
                 <div class="section popular">
                     <h2 class="section-title">Popular Posts</h2>
-                    <div class="post clearfix">
-                        <img src="assets/images/2.png" alt="" />
-                        <a href="#" class="title">Lorem ipsum dolor </a>
-                    </div>
-                    <div class="post clearfix">
-                        <img src="assets/images/2.png" alt="" />
-                        <a href="#" class="title">Lorem ipsum dolor </a>
-                    </div>
-                    <div class="post clearfix">
-                        <img src="assets/images/2.png" alt="" />
-                        <a href="#" class="title">Lorem ipsum dolor </a>
-                    </div>
-                    <div class="post clearfix">
-                        <img src="assets/images/2.png" alt="" />
-                        <a href="#" class="title">Lorem ipsum dolor </a>
-                    </div>
+                    <?php foreach ($posts as $p): ?>
+                        <div class="post clearfix">
+                            <img src="<?php echo BASE_URL . '/assets/images/' . $p['image']; ?>" alt="" />
+                            <a href="#" class="title"><?php echo $p['title'] ?></a>
+                        </div>
+                        <?php endforeach; ?>
                 </div>
                 <div class="section topics">
                     <h2 class="section-title">Topics</h2>
                     <ul>
-                        <li><a href="#">Poems</a></li>
-                        <li><a href="#">Quotes</a></li>
-                        <li><a href="#">Fictions</a></li>
-                        <li><a href="#">Biography</a></li>
-                        <li><a href="#">Motivatpion</a></li>
-                        <li><a href="#">Inspiration</a></li>
-                        <li><a href="#">Life Lessons</a></li>
+                        <?php  foreach ($topics as $topic) : ?>
+                            <li><a href="<?php echo BASE_URL . '/index.php?t_id=' . $topic['id'] ?>"><?php echo $topic['name']; ?></a></li>
+
+                            <?php endforeach; ?>
+
                     </ul>
                 </div>
             </div>

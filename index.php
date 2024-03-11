@@ -1,7 +1,19 @@
 <?php 
 include("path.php");
-
 include(ROOT_PATH . "/app/controllers/topics.php");
+
+$posts = array();
+$postTitle = 'Recent Posts';
+if (isset($_GET['t_id'])){
+    $posts = getPostsByTopicId($_GET['t_id']);
+    $postTitle = "Search for post under '" . $_POST['search-term'] . "'";
+}
+else if (isset($_POST['search-term'])){
+    $postTitle = "Search for...'" . $_POST['search-term'] . "'";
+    $posts = searchPosts($_POST['search-term']);
+}else{
+    $posts = getPublishedPosts();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,109 +41,47 @@ include(ROOT_PATH . "/app/controllers/topics.php");
 
 
             <div class="post-wrapper">
-                <div class="post">
-                    <img src="assets/images/1.jpg" alt="" class="slider-image">
+                <?php foreach($posts as $post): ?>
+                    <div class="post">
+                    <img src="<?php echo BASE_URL . '/assets/images/' . $post['image']; ?>" alt="" class="slider-image">
                     <div class="post-info">
                         <h4>
-                            <a href="single.html">wasd</a>
+                            <a href="single.php?id=<?php echo $post['id']; ?>"><?php echo $post['title'] ?></a>
                         </h4>
-                        <i class="far fa-user"></i>Palmy Kung
+                        <i class="far fa-user"></i><?php echo $post['username']?>
                         &nbsp;
-                        <i class="fa-regular fa-calendar-days"></i>Month,Date Year
+                        <i class="fa-regular fa-calendar-days"></i><?php echo date('F j, Y', strtotime($post['created_at'])); ?>
                     </div>
                 </div>
-                <div class="post">
-                    <img src="assets/images/2.png" alt="" class="slider-image">
-                    <div class="post-info">
-                        <h4>
-                            <a href="single.html">wasd</a>
-                        </h4>
-                        <i class="far fa-user"></i>Palmy Kung
-                        &nbsp;
-                        <i class="fa-regular fa-calendar-days"></i>Month,Date Year
-
-                    </div>
-                </div>
-                <div class="post">
-                    <img src="assets/images/1.jpg" alt="" class="slider-image">
-                    <div class="post-info">
-                        <h4>
-                            <a href="single.html">wasd</a>
-                        </h4>
-                        <i class="far fa-user"></i>Lorem Ipsum
-                        &nbsp;
-                        <i class="fa-regular fa-calendar-days"></i>Month,Date Year
-
-                    </div>
-                </div>
-                <div class="post">
-                    <img src="assets/images/IMG_0191.JPG" alt="" class="slider-image">
-                    <div class="post-info">
-                        <h4>
-                            <a href="single.html">wasd</a>
-                        </h4>
-                        <i class="far fa-user"></i>Lorem Ipsums
-                        &nbsp;
-                        <i class="fa-regular fa-calendar-days"></i>Month,Date Year
-
-                    </div>
-                </div>
+                    <?php endforeach; ?>
             </div>
 
         </div>
 
         <div class="content clearfix">
             <div class="main-content">
-                <h1 class="recent-post-title">Recent Posts</h1>
-                <div class="post">
-                    <img src="assets/images/1.jpg" class="post-image" alt="">
+                <h1 class="recent-post-title"><?php echo $postTitle ?></h1>
+
+                <?php foreach($posts as $post): ?>
+                    <div class="post clearfix">
+                    <img src="<?php echo BASE_URL . '/assets/images/' . $post['image']; ?>" class="post-image" alt="">
                     <div class="post-preview">
-                        <h2><a href="single.html">Loorem Ipsum</a></h2>
-                        <i class="far fa-user"></i>Thanayyy
+                        <h2><a href="single.php?id=<?php echo $post['id']; ?>"><?php echo $post['title']; ?></a></h2>
+                        <i class="far fa-user"></i><?php echo $post['username']?>
                         &nbsp;
-                        <i class="fa-regular fa-calendar-days"></i>Month Day,Year
-                        <p class="preview-text">Lorrem Ipsum</p>
-                        <a href="single.html" class="btn read-more">Read More</a>
+                        <i class="fa-regular fa-calendar-days"></i><?php echo date('F j, Y', strtotime($post['created_at'])); ?>
+                        <p class="preview-text"><?php echo html_entity_decode(substr($post['body'],0,150) . '...'); ?></p>
+                        <a href="single.php?id=<?php echo $post['id']; ?>" class="btn read-more">Read More</a>
                     </div>
                 </div>
-                <div class="post">
-                    <img src="assets/images/IMG_0191.JPG" class="post-image" alt="">
-                    <div class="post-preview">
-                        <h2><a href="single.html">Loorem Ipsum</a></h2>
-                        <i class="far fa-user"></i>Thanayyy
-                        &nbsp;
-                        <i class="fa-regular fa-calendar-days"></i>Month Day,Year
-                        <p class="preview-text">Lorrem Ipsum</p>
-                        <a href="single.html" class="btn read-more">Read More</a>
-                    </div>
-                </div>
-                <div class="post">
-                    <img src="assets/images/000039.JPG" class="post-image" alt="">
-                    <div class="post-preview">
-                        <h2><a href="single.html">Loorem Ipsum</a></h2>
-                        <i class="far fa-user"></i>Thanayyy
-                        &nbsp;
-                        <i class="fa-regular fa-calendar-days"></i>Month Day,Year
-                        <p class="preview-text">Lorrem Ipsum</p>
-                        <a href="single.html" class="btn read-more">Read More</a>
-                    </div>
-                </div>
-                <div class="post">
-                    <img src="assets/images/1.jpg" class="post-image" alt="">
-                    <div class="post-preview">
-                        <h2><a href="single.html">Loorem Ipsum</a></h2>
-                        <i class="far fa-user"></i>Thanayyy
-                        &nbsp;
-                        <i class="fa-regular fa-calendar-days"></i>Month Day,Year
-                        <p class="preview-text">Lorrem Ipsum</p>
-                        <a href="single.html" class="btn read-more">Read More</a>
-                    </div>
-                </div>
+                <?php endforeach; ?>
+                
+                
             </div>
             <div class="sidebar">
                 <div class="section search">
                     <h2 class="section-title">Search</h2>
-                    <form action="index.html" method="post">
+                    <form action="index.php" method="post">
                         <input type="text" name="search-term" class="text-input" placeholder="Search...">
                     </form>
                 </div>
@@ -140,7 +90,7 @@ include(ROOT_PATH . "/app/controllers/topics.php");
                     <h2 class="section-title">Topics</h2>
                     <ul>
                     <?php foreach ($topics as $key => $topic): ?>
-                        <li><a href="#"><?php echo $topic['name']; ?></a></li>
+                        <li><a href="<?php echo BASE_URL . '/index.php?t_id=' . $topic['id'] . '&' ?>"><?php echo $topic['name']; ?></a></li>
                         <?php endforeach;?>
                         
                     </ul>

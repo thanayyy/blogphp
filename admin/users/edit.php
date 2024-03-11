@@ -32,10 +32,12 @@
             </div>
             <div class="content">
                 <h2 class="page-title">Edit Users</h2>
-                <form action="create.php" method="post">
+                <?php include(ROOT_PATH . "/app/helpers/formErrors.php"); ?>
+                <form action="edit.php" method="post">
+                    <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <div>
                         <label for="">Username: </label>
-                        <input type="text" name="username" value="<?php echo $username; ?>" id="" class="text-input" >
+                        <input type="text" name="username" value="<?php echo $username; ?>" class="text-input" >
                     </div>
                     <div>
                         <label for="">Email: </label>
@@ -51,18 +53,20 @@
                     </div>
                     <div>
                         <?php if (isset($admin) && $admin == 1): ?>
-                        <label>
+                    <label>
                         <input type="checkbox" name="admin" checked>    
-                        Admin</label>
+                        Admin
+                    </label>
                         <?php else: ?>
                             <label>
                         <input type="checkbox" name="admin">    
-                        Admin</label>
+                        Admin
+                    </label>
                         <?php endif; ?>
                         
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-big">Update User</button>
+                        <button type="submit" name="update-user" class="btn btn-big">Update User</button>
                     </div>
                     
 
