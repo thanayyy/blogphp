@@ -6,7 +6,7 @@ $posts = array();
 $postTitle = 'Recent Posts';
 if (isset($_GET['t_id'])){
     $posts = getPostsByTopicId($_GET['t_id']);
-    $postTitle = "Search for post under '" . $_POST['search-term'] . "'";
+    $postTitle = "Search for post under '" . $_GET['name'] . "'";
 }
 else if (isset($_POST['search-term'])){
     $postTitle = "Search for...'" . $_POST['search-term'] . "'";
@@ -90,7 +90,7 @@ else if (isset($_POST['search-term'])){
                     <h2 class="section-title">Topics</h2>
                     <ul>
                     <?php foreach ($topics as $key => $topic): ?>
-                        <li><a href="<?php echo BASE_URL . '/index.php?t_id=' . $topic['id'] . '&' ?>"><?php echo $topic['name']; ?></a></li>
+                        <li><a href="<?php echo BASE_URL . '/index.php?t_id=' . $topic['id'] . '&name=' . $topic['name'] ?>"><?php echo $topic['name']; ?></a></li>
                         <?php endforeach;?>
                         
                     </ul>
