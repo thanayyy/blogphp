@@ -21,7 +21,7 @@
     <?php include(ROOT_PATH . "/app/includes/header.php"); ?>
     <div class="auth-content">
         <form action="login.php" method="post">
-            <h2 class="form-title">Register</h2>
+            <h2 class="form-title">Login</h2>
             <?php include(ROOT_PATH . "/app/helpers/formErrors.php"); ?>
             <div>
                 <label for="">Username: </label>
