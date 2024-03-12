@@ -4,6 +4,7 @@ include(ROOT_PATH . "/app/controllers/topics.php");
 
 $posts = array();
 $postTitle = 'Recent Posts';
+$index = 0;
 if (isset($_GET['t_id'])){
     $posts = getPostsByTopicId($_GET['t_id']);
     $postTitle = "Search for post under '" . $_GET['name'] . "'";
@@ -42,7 +43,7 @@ else if (isset($_POST['search-term'])){
 
             <div class="post-wrapper">
                 <?php foreach($posts as $post): ?>
-                    <div class="post">
+                <div class="post">
                     <img src="<?php echo BASE_URL . '/assets/images/' . $post['image']; ?>" alt="" class="slider-image">
                     <div class="post-info">
                         <h4>
@@ -50,10 +51,11 @@ else if (isset($_POST['search-term'])){
                         </h4>
                         <i class="far fa-user"></i><?php echo $post['username']?>
                         &nbsp;
-                        <i class="fa-regular fa-calendar-days"></i><?php echo date('F j, Y', strtotime($post['created_at'])); ?>
+                        <i
+                            class="fa-regular fa-calendar-days"></i><?php echo date('F j, Y', strtotime($post['created_at'])); ?>
                     </div>
                 </div>
-                    <?php endforeach; ?>
+                <?php endforeach; ?>
             </div>
 
         </div>
@@ -62,21 +64,35 @@ else if (isset($_POST['search-term'])){
             <div class="main-content">
                 <h1 class="recent-post-title"><?php echo $postTitle ?></h1>
 
-                <?php foreach($posts as $post): ?>
-                    <div class="post clearfix">
+
+
+
+                <?php foreach($posts as $post): 
+                    $index++;
+                    endforeach; 
+
+                for ($i = $index; $i >= 1; $i--) {
+                    $post = $posts[$i - 1]; 
+                    ?>
+
+                <div class="post clearfix">
                     <img src="<?php echo BASE_URL . '/assets/images/' . $post['image']; ?>" class="post-image" alt="">
                     <div class="post-preview">
                         <h2><a href="single.php?id=<?php echo $post['id']; ?>"><?php echo $post['title']; ?></a></h2>
                         <i class="far fa-user"></i><?php echo $post['username']?>
                         &nbsp;
-                        <i class="fa-regular fa-calendar-days"></i><?php echo date('F j, Y', strtotime($post['created_at'])); ?>
-                        <p class="preview-text"><?php echo html_entity_decode(substr($post['body'],0,150) . '...'); ?></p>
+                        <i
+                            class="fa-regular fa-calendar-days"></i><?php echo date('F j, Y', strtotime($post['created_at'])); ?>
+                        <p class="preview-text"><?php echo html_entity_decode(substr($post['body'],0,150) . '...'); ?>
+                        </p>
                         <a href="single.php?id=<?php echo $post['id']; ?>" class="btn read-more">Read More</a>
                     </div>
                 </div>
-                <?php endforeach; ?>
-                
-                
+                <?php } ?>
+
+
+
+
             </div>
             <div class="sidebar">
                 <div class="section search">
@@ -89,10 +105,12 @@ else if (isset($_POST['search-term'])){
                 <div class="section topics">
                     <h2 class="section-title">Topics</h2>
                     <ul>
-                    <?php foreach ($topics as $key => $topic): ?>
-                        <li><a href="<?php echo BASE_URL . '/index.php?t_id=' . $topic['id'] . '&name=' . $topic['name'] ?>"><?php echo $topic['name']; ?></a></li>
+                        <?php foreach ($topics as $key => $topic): ?>
+                        <li><a
+                                href="<?php echo BASE_URL . '/index.php?t_id=' . $topic['id'] . '&name=' . $topic['name'] ?>"><?php echo $topic['name']; ?></a>
+                        </li>
                         <?php endforeach;?>
-                        
+
                     </ul>
                 </div>
             </div>
