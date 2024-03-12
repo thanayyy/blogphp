@@ -38,7 +38,7 @@ if (isset($_POST['register-btn']) ||  isset($_POST['create-admin'])){
             header('Location: ' . BASE_URL . '/admin/users/index.php');
             exit();
         }else{
-            $_POST['admin'] = 0;
+            $_POST['admin'] = 1;
             $user_id = create($table, $_POST);
             $user = selectOne($table, ['id' => $user_id]);
             //dd($user);
